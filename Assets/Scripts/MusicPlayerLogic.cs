@@ -7,7 +7,7 @@ using TMPro;
 
 public class MusicPlayerLogic : MonoBehaviour
 {
-    [SerializeField] private Image[] images = default;
+    [SerializeField] private Image[] albumImages = default;
 
     [Space()]
     [SerializeField] private AudioSource audioSource = default;
@@ -16,9 +16,12 @@ public class MusicPlayerLogic : MonoBehaviour
 
     [Space()]
     [SerializeField] private Text songTitleText = default;
-    [SerializeField] private TextMeshProUGUI playText = default;
-    [SerializeField] private TextMeshProUGUI recycleText = default;
-    [SerializeField] private TextMeshProUGUI skipText = default;
+    [SerializeField] private Image playImage = default;
+    [SerializeField] private Image recycleImag = default;
+    [SerializeField] private Image skipImag = default;
+
+    [Space()]
+    [SerializeField] private Sprite[] iconSprites = default;
 
     private Sprite[] sprites = default;
     private AudioClip[] audios = default;
@@ -63,7 +66,7 @@ public class MusicPlayerLogic : MonoBehaviour
             currentImageIndex = currentImageIndex.GetRandomIndex(sprites.Length);
 
             var albumIMage = sprites[currentImageIndex];
-            foreach (var image in images)
+            foreach (var image in albumImages)
             {
                 image.sprite = albumIMage;
             }
@@ -102,14 +105,14 @@ public class MusicPlayerLogic : MonoBehaviour
         audioSpeed = 240f / audio.length;
 
         if (isPlaying)
-            playText.text = "Playing";
+            playImage.sprite = iconSprites[0];
         else
-            playText.text = "Paused";
+            playImage.sprite = iconSprites[1];
 
         if (isRecycle)
-            recycleText.text = "Recycling";
+            recycleImag.sprite = iconSprites[2];
         else
-            recycleText.text = "Repeating";
+            recycleImag.sprite = iconSprites[3];
     }
 
     public void SetUpMusicPlayer(bool isPlaying, bool isRecycle)
@@ -140,12 +143,12 @@ public class MusicPlayerLogic : MonoBehaviour
         if (isPlaying)
         {
             audioSource.UnPause();
-            playText.text = "Playing";
+            playImage.sprite = iconSprites[0];
         }
         else
         {
             audioSource.Pause();
-            playText.text = "Paused";
+            playImage.sprite = iconSprites[1];
         }
     }
 
@@ -154,9 +157,9 @@ public class MusicPlayerLogic : MonoBehaviour
         isRecycle = isRecycle == false;
 
         if (isRecycle)
-            recycleText.text = "Recycling";
+            recycleImag.sprite = iconSprites[2];
         else
-            recycleText.text = "Repeating";
+            recycleImag.sprite = iconSprites[3];
     }
 
     public void OnClickedSkipButton()
@@ -166,6 +169,7 @@ public class MusicPlayerLogic : MonoBehaviour
         audioSource.Stop();
 
         isPlaying = true;
+        isSliderControl = false;
         currentAudioIndex = currentAudioIndex.GetRandomIndex(audios.Length);
         UpdateMusicPlayerUI();
 
