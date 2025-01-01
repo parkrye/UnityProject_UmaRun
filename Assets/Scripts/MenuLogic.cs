@@ -1,7 +1,8 @@
+using System;
+
 using UnityEngine;
 
 using TMPro;
-using System;
 
 public class MenuLogic : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class MenuLogic : MonoBehaviour
     [SerializeField] private TextMeshProUGUI dateText = default;
 
     private int dateType = 0;
+    private float secondTick = 0f;
+    private int minuteTick = 0;
 
     public void Initialize()
     {
@@ -30,11 +33,25 @@ public class MenuLogic : MonoBehaviour
 
     public void UpdateDate()
     {
-        var current = DateTime.Now;
-        var dateText = dateType == 0
-            ? current.ToString("yyyy-MM-dd ddd tt hh:mm:ss")
-            : current.ToString("yyyy-MM-dd ddd HH:mm:ss");
-        this.dateText.text = dateText;
+        secondTick += Time.deltaTime;
+
+        if (secondTick > 1f)
+        {
+            var current = DateTime.Now;
+            var dateText = dateType == 0
+                ? current.ToString("yyyy-MM-dd ddd tt hh:mm:ss")
+                : current.ToString("yyyy-MM-dd ddd HH:mm:ss");
+            this.dateText.text = dateText;
+
+            secondTick = 0f;
+            minuteTick++;
+        }
+
+        if (minuteTick > 10)
+        {
+            DataManager.CheckDate();
+            minuteTick = 0;
+        }
     }
 
     private void ChangeDateType()

@@ -8,8 +8,7 @@ public static class NotificationLogic
     {
         if (Application.platform == RuntimePlatform.Android)
         {
-            AndroidJavaObject activity = new AndroidJavaClass("com.unity3d.player.UnityPlayer")
-                .GetStatic<AndroidJavaObject>("currentActivity");
+            AndroidJavaObject activity = new AndroidJavaClass("com.unity3d.player.UnityPlayer").GetStatic<AndroidJavaObject>("currentActivity");
             AndroidJavaObject intent = new AndroidJavaObject("android.content.Intent", activity, new AndroidJavaClass("com.Parkrye.notification.ForegroundService"));
             activity.Call("startService", intent);
         }
