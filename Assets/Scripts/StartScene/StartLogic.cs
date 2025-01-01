@@ -28,7 +28,7 @@ public class StartLogic : MonoBehaviour
         var voices = Resources.LoadAll<AudioClip>("Voices");
         var randIndex = Random.Range(0, voices.Length);
         var randTarget = voices[randIndex];
-        var wait = new WaitForSeconds(randTarget.length);
+        var wait = new WaitForSeconds(randTarget.length * 1.5f);
 
         yield return wait;
         audioSource.clip = voices[randIndex];

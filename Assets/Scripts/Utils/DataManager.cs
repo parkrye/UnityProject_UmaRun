@@ -2,6 +2,7 @@ using System;
 using System.IO;
 
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public static class DataManager
 {
@@ -13,6 +14,7 @@ public static class DataManager
     {
         var path = Path.Combine(Application.persistentDataPath, fileName);
         CheckDate();
+
         var json = SerializeData();
         File.WriteAllText(path, json);
     }
@@ -24,12 +26,12 @@ public static class DataManager
         {
             var data = new Data()
             {
-                Date = DateTime.Now,
                 StepCount = 0,
                 Distance = 0,
                 TimeSeconds = 0,
                 AverageSpeed = 0,
             };
+            data.SetDate(DateTime.Now);
 
             UserData = new UserData()
             {
@@ -47,9 +49,20 @@ public static class DataManager
         CheckDate();
     }
 
+    public static void ResetData()
+    {
+        var path = Path.Combine(Application.persistentDataPath, fileName);
+        if (File.Exists(path) == false)
+            return;
+
+        File.Delete(path);
+        PlayerPrefs.DeleteAll();
+        SceneManager.LoadScene("StartScene");
+    }
+
     public static void CheckDate()
     {
-        if (UserData.CurrentData.Date.Date == DateTime.Now.Date)
+        if (UserData.CurrentData.GetDate().Date == DateTime.Now.Date)
             return;
 
         var prevDates = UserData.Datas;
@@ -84,9 +97,19 @@ public class UserData
 [Serializable]
 public class Data
 {
-    public DateTime Date;
+    public string Date;
     public int StepCount;
     public float Distance;
     public float TimeSeconds;
     public float AverageSpeed;
+
+    public void SetDate(DateTime dateTime)
+    {
+        Date = dateTime.ToString("O");
+    }
+
+    public DateTime GetDate()
+    {
+        return DateTime.Parse(Date);
+    }
 }

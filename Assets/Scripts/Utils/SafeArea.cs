@@ -35,6 +35,9 @@ public class SafeArea : MonoBehaviour
             rectTransform.anchorMax = anchorMax;
         }
 
+        if (canvas == null)
+            return;
+
         foreach (var top in topCovers)
         {
             top.sizeDelta = Vector2.up * (Screen.height - safeArea.yMax) / canvas.scaleFactor;

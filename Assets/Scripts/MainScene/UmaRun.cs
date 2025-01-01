@@ -8,15 +8,14 @@ public class UmaRun : MonoBehaviour
     [SerializeField] private MusicPlayerLogic musicPlayerLogic;
     [SerializeField] private PalletteLogic palletteLogic;
     [SerializeField] private MenuLogic menuLogic;
+    [SerializeField] private PopupUIHolder popupUIHolder;
 
     private bool isPaused = false;
 
     private void Start()
     {
-        stepCounterLogic.Initialize();
-        musicPlayerLogic.Initialize();
-        palletteLogic.Initialize();
-        menuLogic.Initialize();
+        Initialize();
+        SetListeners();
 
         LoadState();
     }
@@ -49,6 +48,26 @@ public class UmaRun : MonoBehaviour
     {
         SaveState();
     }
+
+    private void Initialize()
+    {
+        stepCounterLogic.Initialize();
+        musicPlayerLogic.Initialize();
+        palletteLogic.Initialize();
+        menuLogic.Initialize();
+    }
+
+    private void SetListeners()
+    {
+        menuLogic.OnClcikedPalletteButtonListener = palletteLogic.OnClickedChangePallette;
+        menuLogic.OnClickedResetButtonListener = ShowCommonSelectPopup;
+        menuLogic.OnClickedQuitButtonListener = ShowCommonSelectPopup;
+    }
+
+    private void ShowCommonConfirmPopup(string title, string desc, Action onConfirmAction) => popupUIHolder.ShowCommonConfirmPopup(title, desc, onConfirmAction);
+    private void ShowConfirmPopup(string title, string desc, string confirmText, Action onConfirmAction) => popupUIHolder.ShowConfirmPopup(title, desc, confirmText, onConfirmAction);
+    private void ShowCommonSelectPopup(string title, string desc, Action onYesAction, Action onNoAction) => popupUIHolder.ShowCommonSelectPopup(title, desc, onYesAction, onNoAction);
+    private void ShowSelectPopup(string title, string desc, string yes, string no, Action onYesAction, Action onNoAction) => popupUIHolder.ShowSelectPopup(title, desc, yes, no, onYesAction, onNoAction);
 
     private void SaveState()
     {

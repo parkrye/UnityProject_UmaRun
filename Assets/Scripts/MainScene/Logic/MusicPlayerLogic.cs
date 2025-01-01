@@ -49,10 +49,6 @@ public class MusicPlayerLogic : MonoBehaviour
         playAudioWait = new WaitWhile(() => audioSource.isPlaying || isPlaying == false || isSliderControl);
         waitSliderControl = new WaitWhile(() => isSliderControl);
         waitForSeconds = new WaitForSeconds(1f);
-
-        if (playAudioRoutine != null)
-            StopCoroutine(playAudioRoutine);
-        StartCoroutine(playAudioRoutine = PlayAudioClipRoutine());
     }
 
     private IEnumerator PlayAudioClipRoutine()
@@ -83,7 +79,7 @@ public class MusicPlayerLogic : MonoBehaviour
 
     public void TurnningAlbumImage()
     {
-        if (audioSource.isPlaying || isPlaying || isSliderControl == false)
+        if (audioSource.isPlaying == false || isPlaying == false || isSliderControl)
             return;
 
         albumImageRect.Rotate(Vector3.back, Time.deltaTime * audioSpeed);
@@ -142,6 +138,9 @@ public class MusicPlayerLogic : MonoBehaviour
 
         if (isPlaying)
         {
+            if (playAudioRoutine == null)
+                StartCoroutine(playAudioRoutine = PlayAudioClipRoutine());
+
             audioSource.UnPause();
             playImage.sprite = iconSprites[0];
         }
@@ -165,7 +164,13 @@ public class MusicPlayerLogic : MonoBehaviour
     public void OnClickedSkipButton()
     {
         if (playAudioRoutine == null)
+        {
+            isPlaying = true;
+            isSliderControl = false;
+            StartCoroutine(playAudioRoutine = PlayAudioClipRoutine());
             return;
+        }
+
         audioSource.Stop();
 
         isPlaying = true;

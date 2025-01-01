@@ -14,8 +14,13 @@ public class MenuLogic : MonoBehaviour
     private float secondTick = 0f;
     private int minuteTick = 0;
 
+    public Action OnClcikedPalletteButtonListener { get; set; }
+    public Action<string, string, Action, Action> OnClickedResetButtonListener { get; set; }
+    public Action<string, string, Action, Action> OnClickedQuitButtonListener { get; set; }
+
     public void Initialize()
     {
+        menuCancelRect.anchoredPosition = new Vector2(Screen.width - Screen.safeArea.xMax, Screen.height - Screen.safeArea.yMax);
         menuCancelRect.sizeDelta = new Vector2(Screen.width, Screen.height);
 
         HideMenuPanel();
@@ -89,6 +94,11 @@ public class MenuLogic : MonoBehaviour
         HideMenuPanel();
     }
 
+    public void OnClickedPalletteButton()
+    {
+        OnClcikedPalletteButtonListener?.Invoke();
+    }
+
     public void OnClickedRecordButton()
     {
 
@@ -96,11 +106,19 @@ public class MenuLogic : MonoBehaviour
 
     public void OnClickedResetButton()
     {
-
+        OnClickedResetButtonListener?.Invoke(
+            "Are You Sure Reset Data?", 
+            "All data will be deleted, and recovery will not be possible", 
+            DataManager.ResetData, 
+            null);
     }
 
     public void OnClickedQuitButton()
     {
-        QuitApplication();
+        OnClickedQuitButtonListener?.Invoke(
+            "Are You Sure Quit the UmaRun?",
+            "",
+            QuitApplication,
+            null);
     }
 }
