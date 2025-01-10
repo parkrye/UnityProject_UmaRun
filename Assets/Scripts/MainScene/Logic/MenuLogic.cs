@@ -15,6 +15,7 @@ public class MenuLogic : MonoBehaviour
     private int minuteTick = 0;
 
     public Action OnClcikedPalletteButtonListener { get; set; }
+    public Action OnClcikedRecordButtonListener { get; set; }
     public Action<string, string, Action, Action> OnClickedResetButtonListener { get; set; }
     public Action<string, string, Action, Action> OnClickedQuitButtonListener { get; set; }
 
@@ -79,10 +80,7 @@ public class MenuLogic : MonoBehaviour
 
     public void OnClickedPalletteButton() => OnClcikedPalletteButtonListener?.Invoke();
 
-    public void OnClickedRecordButton()
-    {
-
-    }
+    public void OnClickedRecordButton() => OnClcikedRecordButtonListener?.Invoke();
 
     private void ChangeDateType() => dateType = 1 - dateType;
 

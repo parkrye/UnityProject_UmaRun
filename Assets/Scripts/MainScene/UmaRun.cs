@@ -4,11 +4,15 @@ using UnityEngine;
 
 public class UmaRun : MonoBehaviour
 {
+    [Header("Sub Logics")]
     [SerializeField] private StepCounterLogic stepCounterLogic;
     [SerializeField] private MusicPlayerLogic musicPlayerLogic;
     [SerializeField] private PalletteLogic palletteLogic;
     [SerializeField] private MenuLogic menuLogic;
+
+    [Space(), Header("UI Holders")]
     [SerializeField] private PopupUIHolder popupUIHolder;
+    [SerializeField] private RecordUIHolder recordUIHolder;
 
     private bool isPaused = false;
 
@@ -53,6 +57,8 @@ public class UmaRun : MonoBehaviour
         musicPlayerLogic.Initialize();
         palletteLogic.Initialize();
         menuLogic.Initialize();
+
+        recordUIHolder.Initialize();
     }
 
     private void SetListeners()
@@ -60,6 +66,7 @@ public class UmaRun : MonoBehaviour
         menuLogic.OnClcikedPalletteButtonListener = palletteLogic.OnClickedChangePallette;
         menuLogic.OnClickedResetButtonListener = ShowCommonSelectPopup;
         menuLogic.OnClickedQuitButtonListener = ShowCommonSelectPopup;
+        menuLogic.OnClcikedRecordButtonListener = recordUIHolder.ShowRecordUI;
     }
 
     private void SaveState()

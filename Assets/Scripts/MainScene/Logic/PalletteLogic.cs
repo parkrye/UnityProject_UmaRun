@@ -8,6 +8,7 @@ public class PalletteLogic : MonoBehaviour
     [SerializeField] private Image[] images = default;
     [SerializeField] private TextMeshProUGUI[] texts = default;
     [SerializeField] private Image[] rImages = default;
+    [SerializeField] private TextMeshProUGUI[] rTexts = default;
     [SerializeField] private Text songTitleText = default;
 
     [SerializeField] private Color[] colors = default;
@@ -48,14 +49,20 @@ public class PalletteLogic : MonoBehaviour
 
     private void UpdatePallette()
     {
+        var color = colors[palletIndex];
         foreach (var image in images)
         {
             var alpha = image.color.a;
-            image.color = new Color(colors[palletIndex].r, colors[palletIndex].g, colors[palletIndex].b, alpha);
+            image.color = new Color(color.r, color.g, color.b, alpha);
         }
 
-        var reverseColor = Color.white - colors[palletIndex];
-        reverseColor = new Color(reverseColor.r, reverseColor.g, reverseColor.b, 1f);
+        foreach (var rText in rTexts)
+        {
+            rText.color = colors[palletIndex];
+        }
+
+        var reverseColor = Color.white - color;
+        reverseColor.a = 1f;
         foreach (var text in texts)
         {
             text.color = reverseColor;
