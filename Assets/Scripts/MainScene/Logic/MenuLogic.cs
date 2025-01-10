@@ -54,7 +54,7 @@ public class MenuLogic : MonoBehaviour
 
         if (minuteTick > 10)
         {
-            DataManager.CheckDate();
+            DataManager.Instance.CheckDate();
             minuteTick = 0;
         }
     }
@@ -107,17 +107,17 @@ public class MenuLogic : MonoBehaviour
     public void OnClickedResetButton()
     {
         OnClickedResetButtonListener?.Invoke(
+            "Reset Data",
             "Are You Sure Reset Data?", 
-            "All data will be deleted, and recovery will not be possible", 
-            DataManager.ResetData, 
+            DataManager.Instance.ResetData, 
             null);
     }
 
     public void OnClickedQuitButton()
     {
         OnClickedQuitButtonListener?.Invoke(
+            "Quit App",
             "Are You Sure Quit the UmaRun?",
-            "",
             QuitApplication,
             null);
     }

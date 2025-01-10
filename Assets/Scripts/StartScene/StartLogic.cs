@@ -15,10 +15,7 @@ public class StartLogic : MonoBehaviour
         // 백그라운드 실행 설정
         Application.runInBackground = true;
 
-        DataManager.LoadData();
-
-        NotificationLogic.StartNotificationSetting();
-        NotificationLogic.ShowNotification("Start UMA RUN!");
+        DataManager.Instance.LoadData();
 
         StartCoroutine(ReadyToPlay());
     }
@@ -28,18 +25,17 @@ public class StartLogic : MonoBehaviour
         var voices = Resources.LoadAll<AudioClip>("Voices");
         var randIndex = Random.Range(0, voices.Length);
         var randTarget = voices[randIndex];
-        var wait = new WaitForSeconds(randTarget.length * 1.5f);
 
-        yield return wait;
+        yield return new WaitForSeconds(randTarget.length * 0.5f); ;
         audioSource.clip = voices[randIndex];
         audioSource.Play();
 
         titleText.gameObject.SetActive(true);
 
-        yield return wait;
+        yield return new WaitForSeconds(randTarget.length * 2f); ;
         titleText.gameObject.SetActive(false);
 
-        yield return wait;
+        yield return new WaitForSeconds(randTarget.length); ;
         SceneManager.LoadScene("MainScene");
     }
 }

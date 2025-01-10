@@ -18,7 +18,6 @@ public class MusicPlayerLogic : MonoBehaviour
     [SerializeField] private Text songTitleText = default;
     [SerializeField] private Image playImage = default;
     [SerializeField] private Image recycleImag = default;
-    [SerializeField] private Image skipImag = default;
 
     [Space()]
     [SerializeField] private Sprite[] iconSprites = default;
@@ -49,6 +48,15 @@ public class MusicPlayerLogic : MonoBehaviour
         playAudioWait = new WaitWhile(() => audioSource.isPlaying || isPlaying == false || isSliderControl);
         waitSliderControl = new WaitWhile(() => isSliderControl);
         waitForSeconds = new WaitForSeconds(1f);
+
+        if (DataManager.Instance.UserData.MusicIndex >= 0)
+        {
+            currentAudioIndex = DataManager.Instance.UserData.MusicIndex;
+            return;
+        }
+
+        currentAudioIndex = currentAudioIndex.GetRandomIndex(audios.Length);
+        DataManager.Instance.UserData.MusicIndex = currentAudioIndex;
     }
 
     private IEnumerator PlayAudioClipRoutine()
@@ -58,7 +66,11 @@ public class MusicPlayerLogic : MonoBehaviour
         while (true)
         {
             if (isRecycle)
+            {
                 currentAudioIndex = currentAudioIndex.GetRandomIndex(audios.Length);
+                DataManager.Instance.UserData.MusicIndex = currentAudioIndex;
+            }
+
             currentImageIndex = currentImageIndex.GetRandomIndex(sprites.Length);
 
             var albumIMage = sprites[currentImageIndex];
@@ -176,6 +188,7 @@ public class MusicPlayerLogic : MonoBehaviour
         isPlaying = true;
         isSliderControl = false;
         currentAudioIndex = currentAudioIndex.GetRandomIndex(audios.Length);
+        DataManager.Instance.UserData.MusicIndex = currentAudioIndex;
         UpdateMusicPlayerUI();
 
         StopCoroutine(playAudioRoutine);

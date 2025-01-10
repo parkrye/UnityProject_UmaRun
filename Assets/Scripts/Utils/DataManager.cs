@@ -4,13 +4,24 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public static class DataManager
+public class DataManager
 {
+    private static DataManager instance;
+    public static DataManager Instance
+    {
+        get
+        {
+            if (instance == null)
+                instance = new DataManager();
+            return instance;
+        }
+    }
+
     private const string fileName = "Data";
 
-    public static UserData UserData;
+    public UserData UserData;
 
-    public static void SaveData()
+    public void SaveData()
     {
         var path = Path.Combine(Application.persistentDataPath, fileName);
         CheckDate();
@@ -19,37 +30,27 @@ public static class DataManager
         File.WriteAllText(path, json);
     }
 
-    public static void LoadData()
+    public void LoadData()
     {
         var path = Path.Combine(Application.persistentDataPath, fileName);
         if (File.Exists(path) == false)
         {
-            var data = new Data()
-            {
-                StepCount = 0,
-                Distance = 0,
-                TimeSeconds = 0,
-                AverageSpeed = 0,
-            };
-            data.SetDate(DateTime.Now);
-
-            UserData = new UserData()
-            {
-                Datas = new Data[] { data },
-                Playing = false,
-                Recycling = false,
-                Pallette = 0,
-                DateType = 0,
-            };
+            CreateNewData();
             return;
         }
 
         var jsonData = File.ReadAllText(path);
         UserData = DeserializeData(jsonData);
+        if (UserData.CurrentData == null)
+        {
+            CreateNewData();
+            return;
+        }
+
         CheckDate();
     }
 
-    public static void ResetData()
+    public void ResetData()
     {
         var path = Path.Combine(Application.persistentDataPath, fileName);
         if (File.Exists(path) == false)
@@ -60,26 +61,50 @@ public static class DataManager
         SceneManager.LoadScene("StartScene");
     }
 
-    public static void CheckDate()
+    public void CheckDate()
     {
         if (UserData.CurrentData.GetDate().Date == DateTime.Now.Date)
             return;
 
         var prevDates = UserData.Datas;
-        var updateDates = new Data[prevDates.Length + 1];
-        Array.Copy(prevDates, updateDates, prevDates.Length);
+        var dataLength = prevDates.Length;
+        var updateDates = new Data[dataLength + 1];
+        Array.Copy(prevDates, updateDates, dataLength);
+        updateDates[dataLength] = new Data()
+        {
+            StepCount = 0,
+            Distance = 0,
+            TimeSeconds = 0,
+            AverageSpeed = 0,
+        };
+        updateDates[dataLength].SetDate(DateTime.Now);
         UserData.Datas = updateDates;
     }
 
-    private static string SerializeData()
+    private void CreateNewData()
     {
-        return JsonUtility.ToJson(UserData);
+        var data = new Data()
+        {
+            StepCount = 0,
+            Distance = 0,
+            TimeSeconds = 0,
+            AverageSpeed = 0,
+        };
+        data.SetDate(DateTime.Now);
+
+        UserData = new UserData()
+        {
+            Datas = new Data[] { data },
+            IsPlaying = false,
+            IsRecycling = false,
+            PalletteIndex = 0,
+            DateType = 0,
+        };
     }
 
-    private static UserData DeserializeData(string jsonData)
-    {
-        return JsonUtility.FromJson<UserData>(jsonData);
-    }
+    private string SerializeData() => JsonUtility.ToJson(UserData);
+
+    private UserData DeserializeData(string jsonData) => JsonUtility.FromJson<UserData>(jsonData);
 }
 
 [Serializable]
@@ -88,10 +113,11 @@ public class UserData
     public Data[] Datas;
     public Data CurrentData { get { return Datas[Datas.Length - 1]; } }
 
-    public bool Playing;
-    public bool Recycling;
-    public int Pallette;
-    public int DateType;
+    public bool IsPlaying = true;
+    public bool IsRecycling = true;
+    public int MusicIndex = -1;
+    public int PalletteIndex = 0;
+    public int DateType = 0;
 }
 
 [Serializable]

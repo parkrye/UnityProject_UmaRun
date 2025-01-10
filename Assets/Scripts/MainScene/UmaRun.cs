@@ -30,8 +30,6 @@ public class UmaRun : MonoBehaviour
         menuLogic.UpdateDate();
 
         musicPlayerLogic.TurnningAlbumImage();
-
-        NotificationLogic.ShowNotification($"UMA RUN NOW! {DateTime.Now}");
     }
 
     private void OnApplicationPause(bool pauseStatus)
@@ -77,27 +75,27 @@ public class UmaRun : MonoBehaviour
         var dateType = menuLogic.GetDateType();
 
         // 현재 상태 저장
-        DataManager.UserData.CurrentData.StepCount = stepCount;
-        DataManager.UserData.CurrentData.Distance = distance;
-        DataManager.UserData.CurrentData.TimeSeconds = Time.time - startTime;
-        DataManager.UserData.Playing = isPlaying;
-        DataManager.UserData.Recycling = isRecycle;
-        DataManager.UserData.Pallette = pallette;
-        DataManager.UserData.DateType = dateType;
+        DataManager.Instance.UserData.CurrentData.StepCount = stepCount;
+        DataManager.Instance.UserData.CurrentData.Distance = distance;
+        DataManager.Instance.UserData.CurrentData.TimeSeconds = Time.time - startTime;
+        DataManager.Instance.UserData.IsPlaying = isPlaying;
+        DataManager.Instance.UserData.IsRecycling = isRecycle;
+        DataManager.Instance.UserData.PalletteIndex = pallette;
+        DataManager.Instance.UserData.DateType = dateType;
 
-        DataManager.SaveData();
+        DataManager.Instance.SaveData();
     }
 
     private void LoadState()
     {
         // 저장된 상태 불러오기
-        var stepCount = DataManager.UserData.CurrentData.StepCount;
-        var distance = DataManager.UserData.CurrentData.Distance;
-        var startTime = DataManager.UserData.CurrentData.TimeSeconds;
-        var isPlaying = DataManager.UserData.Playing;
-        var isRecycle = DataManager.UserData.Recycling;
-        var pallette = DataManager.UserData.Pallette;
-        var dateType = DataManager.UserData.DateType;
+        var stepCount = DataManager.Instance.UserData.CurrentData.StepCount;
+        var distance = DataManager.Instance.UserData.CurrentData.Distance;
+        var startTime = DataManager.Instance.UserData.CurrentData.TimeSeconds;
+        var isPlaying = DataManager.Instance.UserData.IsPlaying;
+        var isRecycle = DataManager.Instance.UserData.IsRecycling;
+        var pallette = DataManager.Instance.UserData.PalletteIndex;
+        var dateType = DataManager.Instance.UserData.DateType;
 
         stepCounterLogic.SetUpStepCounter(stepCount, distance, startTime);
         musicPlayerLogic.SetUpMusicPlayer(isPlaying, isRecycle);
