@@ -1,7 +1,8 @@
+using System;
+
 using UnityEngine;
 
 using TMPro;
-using System;
 
 public class PopupUIHolder : MonoBehaviour
 {
@@ -20,11 +21,6 @@ public class PopupUIHolder : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    public void ShowCommonConfirmPopup(string title, string desc, Action onConfirmAction)
-    {
-        ShowConfirmPopup(title, desc, "OK", onConfirmAction);
-    }
-
     public void ShowConfirmPopup(string title, string desc, string confirmText, Action onConfirmAction)
     {
         titleText.text = title;
@@ -38,11 +34,6 @@ public class PopupUIHolder : MonoBehaviour
         noButton.gameObject.SetActive(false);
 
         ShowUI();
-    }
-
-    public void ShowCommonSelectPopup(string title, string desc, Action onYesAction, Action onNoAction)
-    {
-        ShowSelectPopup(title, desc, "YES", "NO", onYesAction, onNoAction);
     }
 
     public void ShowSelectPopup(string title, string desc, string yes, string no, Action onYesAction, Action onNoAction)
@@ -61,16 +52,6 @@ public class PopupUIHolder : MonoBehaviour
         ShowUI();
     }
 
-    public void ShowUI()
-    {
-        gameObject.SetActive(true);
-    }
-
-    public void CloseUI()
-    {
-        gameObject.SetActive(false);
-    }
-
     public void OnClickedYesButton()
     {
         OnClickedYesButtonListener?.Invoke();
@@ -84,4 +65,12 @@ public class PopupUIHolder : MonoBehaviour
         
         CloseUI();
     }
+
+    public void ShowUI() => gameObject.SetActive(true);
+
+    public void CloseUI() => gameObject.SetActive(false);
+
+    public void ShowCommonConfirmPopup(string title, string desc, Action onConfirmAction) => ShowConfirmPopup(title, desc, "OK", onConfirmAction);
+
+    public void ShowCommonSelectPopup(string title, string desc, Action onYesAction, Action onNoAction) => ShowSelectPopup(title, desc, "YES", "NO", onYesAction, onNoAction);
 }

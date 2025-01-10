@@ -57,14 +57,10 @@ public class StepCounterLogic : MonoBehaviour
     public void UpdateStepCountUI()
     {
         if (stepCountText != null)
-        {
             stepCountText.text = $"{stepCount}";
-        }
 
         if (distanceText != null)
-        {
             distanceText.text = $"{distance:F2} m";
-        }
 
         if (timeText != null)
         {
@@ -89,8 +85,5 @@ public class StepCounterLogic : MonoBehaviour
         UpdateStepCountUI();
     }
 
-    public (int stepCount, float distance, float startTime) GetStepCounterData()
-    {
-        return (stepCount, distance, startTime);
-    }
+    public (int stepCount, float distance, float startTime) GetStepCounterData() => (stepCount, distance, startTime);
 }

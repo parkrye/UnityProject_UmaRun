@@ -25,18 +25,9 @@ public class SliderEventHandler : MonoBehaviour, IPointerDownHandler, IPointerUp
         slider.value = value;
     }
 
-    public void OnPointerDown(PointerEventData eventData)
-    {
-        OnPointerEvent?.Invoke(true);
-    }
+    public void OnPointerDown(PointerEventData eventData) => OnPointerEvent?.Invoke(true);
 
-    public void OnPointerUp(PointerEventData eventData)
-    {
-        OnPointerEvent?.Invoke(false);
-    }
+    public void OnPointerUp(PointerEventData eventData) => OnPointerEvent?.Invoke(false);
 
-    public void SetInteractable(bool isOn)
-    {
-        slider.interactable = isOn;
-    }
+    public void SetInteractable(bool isOn) => slider.interactable = isOn;
 }

@@ -62,11 +62,6 @@ public class UmaRun : MonoBehaviour
         menuLogic.OnClickedQuitButtonListener = ShowCommonSelectPopup;
     }
 
-    private void ShowCommonConfirmPopup(string title, string desc, Action onConfirmAction) => popupUIHolder.ShowCommonConfirmPopup(title, desc, onConfirmAction);
-    private void ShowConfirmPopup(string title, string desc, string confirmText, Action onConfirmAction) => popupUIHolder.ShowConfirmPopup(title, desc, confirmText, onConfirmAction);
-    private void ShowCommonSelectPopup(string title, string desc, Action onYesAction, Action onNoAction) => popupUIHolder.ShowCommonSelectPopup(title, desc, onYesAction, onNoAction);
-    private void ShowSelectPopup(string title, string desc, string yes, string no, Action onYesAction, Action onNoAction) => popupUIHolder.ShowSelectPopup(title, desc, yes, no, onYesAction, onNoAction);
-
     private void SaveState()
     {
         (int stepCount, float distance, float startTime) = stepCounterLogic.GetStepCounterData();
@@ -102,4 +97,9 @@ public class UmaRun : MonoBehaviour
         palletteLogic.SetUpPallette(pallette);
         menuLogic.SetUpDateType(dateType);
     }
+
+    private void ShowCommonConfirmPopup(string title, string desc, Action onConfirmAction) => popupUIHolder.ShowCommonConfirmPopup(title, desc, onConfirmAction);
+    private void ShowConfirmPopup(string title, string desc, string confirmText, Action onConfirmAction) => popupUIHolder.ShowConfirmPopup(title, desc, confirmText, onConfirmAction);
+    private void ShowCommonSelectPopup(string title, string desc, Action onYesAction, Action onNoAction) => popupUIHolder.ShowCommonSelectPopup(title, desc, onYesAction, onNoAction);
+    private void ShowSelectPopup(string title, string desc, string yes, string no, Action onYesAction, Action onNoAction) => popupUIHolder.ShowSelectPopup(title, desc, yes, no, onYesAction, onNoAction);
 }

@@ -36,6 +36,16 @@ public class PalletteLogic : MonoBehaviour
         UpdatePallette();
     }
 
+    public void OnClickedChangePallette()
+    {
+        palletIndex++;
+        if (palletIndex >= colors.Length)
+            palletIndex = 0;
+        UpdatePallette();
+    }
+
+    public int GetPalletteData() => palletIndex;
+
     private void UpdatePallette()
     {
         foreach (var image in images)
@@ -50,23 +60,12 @@ public class PalletteLogic : MonoBehaviour
         {
             text.color = reverseColor;
         }
+
         foreach (var rImage in rImages)
         {
             rImage.color = reverseColor;
         }
+
         songTitleText.color = reverseColor;
-    }
-
-    public void OnClickedChangePallette()
-    {
-        palletIndex++;
-        if (palletIndex >= colors.Length)
-            palletIndex = 0;
-        UpdatePallette();
-    }
-
-    public int GetPalletteData()
-    {
-        return palletIndex;
     }
 }

@@ -129,13 +129,7 @@ public class Data
     public float TimeSeconds;
     public float AverageSpeed;
 
-    public void SetDate(DateTime dateTime)
-    {
-        Date = dateTime.ToString("O");
-    }
+    public void SetDate(DateTime dateTime) => Date = dateTime.ToString("O");
 
-    public DateTime GetDate()
-    {
-        return DateTime.Parse(Date);
-    }
+    public DateTime GetDate() => DateTime.Parse(Date);
 }

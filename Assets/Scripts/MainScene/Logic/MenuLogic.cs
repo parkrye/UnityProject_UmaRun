@@ -26,16 +26,6 @@ public class MenuLogic : MonoBehaviour
         HideMenuPanel();
     }
 
-    public void SetUpDateType(int dateType)
-    {
-        this.dateType = dateType;
-    }
-
-    public int GetDateType()
-    {
-        return dateType;
-    }
-
     public void UpdateDate()
     {
         secondTick += Time.deltaTime;
@@ -59,66 +49,46 @@ public class MenuLogic : MonoBehaviour
         }
     }
 
-    private void ChangeDateType()
-    {
-        dateType = 1 - dateType;
-    }
-
-    private void ShowMenuPanel()
-    {
-        menuPanel.gameObject.SetActive(true);
-    }
-
-    private void HideMenuPanel()
-    {
-        menuPanel.gameObject.SetActive(false);
-    }
-
-    private void QuitApplication()
-    {
-        Application.Quit();
-    }
-
-    public void OnClickedDateButton()
-    {
-        ChangeDateType();
-    }
-
-    public void OnClickedMenuButton()
-    {
-        ShowMenuPanel();
-    }
-
-    public void OnClickedCloseMenuButton()
-    {
-        HideMenuPanel();
-    }
-
-    public void OnClickedPalletteButton()
-    {
-        OnClcikedPalletteButtonListener?.Invoke();
-    }
-
-    public void OnClickedRecordButton()
-    {
-
-    }
-
     public void OnClickedResetButton()
     {
         OnClickedResetButtonListener?.Invoke(
-            "Reset Data",
-            "Are You Sure Reset Data?", 
-            DataManager.Instance.ResetData, 
+            "Are You Sure Reset Data?",
+            "Deleted data cannot be recovered",
+            DataManager.Instance.ResetData,
             null);
     }
 
     public void OnClickedQuitButton()
     {
         OnClickedQuitButtonListener?.Invoke(
-            "Quit App",
             "Are You Sure Quit the UmaRun?",
+            "You can't measure it when you quit the app",
             QuitApplication,
             null);
     }
+
+    public void SetUpDateType(int dateType) => this.dateType = dateType;
+
+    public int GetDateType() => dateType;
+
+    public void OnClickedDateButton() => ChangeDateType();
+
+    public void OnClickedMenuButton() => ShowMenuPanel();
+
+    public void OnClickedCloseMenuButton() => HideMenuPanel();
+
+    public void OnClickedPalletteButton() => OnClcikedPalletteButtonListener?.Invoke();
+
+    public void OnClickedRecordButton()
+    {
+
+    }
+
+    private void ChangeDateType() => dateType = 1 - dateType;
+
+    private void ShowMenuPanel() => menuPanel.gameObject.SetActive(true);
+
+    private void HideMenuPanel() => menuPanel.gameObject.SetActive(false);
+
+    private void QuitApplication() => Application.Quit();
 }

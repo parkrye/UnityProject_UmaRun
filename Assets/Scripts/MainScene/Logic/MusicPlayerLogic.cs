@@ -3,8 +3,6 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-using TMPro;
-
 public class MusicPlayerLogic : MonoBehaviour
 {
     [SerializeField] private Image[] albumImages = default;
@@ -57,36 +55,6 @@ public class MusicPlayerLogic : MonoBehaviour
 
         currentAudioIndex = currentAudioIndex.GetRandomIndex(audios.Length);
         DataManager.Instance.UserData.MusicIndex = currentAudioIndex;
-    }
-
-    private IEnumerator PlayAudioClipRoutine()
-    {
-        musicSlider.OnPointerEvent = OnControlSlider;
-
-        while (true)
-        {
-            if (isRecycle)
-            {
-                currentAudioIndex = currentAudioIndex.GetRandomIndex(audios.Length);
-                DataManager.Instance.UserData.MusicIndex = currentAudioIndex;
-            }
-
-            currentImageIndex = currentImageIndex.GetRandomIndex(sprites.Length);
-
-            var albumIMage = sprites[currentImageIndex];
-            foreach (var image in albumImages)
-            {
-                image.sprite = albumIMage;
-            }
-
-            var audio = audios[currentAudioIndex];
-            audioSource.clip = audio;
-            audioSource.Play();
-
-            UpdateMusicPlayerUI();
-
-            yield return playAudioWait;
-        }
     }
 
     public void TurnningAlbumImage()
@@ -195,6 +163,38 @@ public class MusicPlayerLogic : MonoBehaviour
         StartCoroutine(playAudioRoutine = PlayAudioClipRoutine());
     }
 
+    public (bool isPlaying, bool isRecycle) GetMusicPlayerData() => (isPlaying, isRecycle);
+
+    private IEnumerator PlayAudioClipRoutine()
+    {
+        musicSlider.OnPointerEvent = OnControlSlider;
+
+        while (true)
+        {
+            if (isRecycle)
+            {
+                currentAudioIndex = currentAudioIndex.GetRandomIndex(audios.Length);
+                DataManager.Instance.UserData.MusicIndex = currentAudioIndex;
+            }
+
+            currentImageIndex = currentImageIndex.GetRandomIndex(sprites.Length);
+
+            var albumIMage = sprites[currentImageIndex];
+            foreach (var image in albumImages)
+            {
+                image.sprite = albumIMage;
+            }
+
+            var audio = audios[currentAudioIndex];
+            audioSource.clip = audio;
+            audioSource.Play();
+
+            UpdateMusicPlayerUI();
+
+            yield return playAudioWait;
+        }
+    }
+
     private void OnControlSlider(bool inOn)
     {
         isSliderControl = inOn;
@@ -223,10 +223,5 @@ public class MusicPlayerLogic : MonoBehaviour
         controlSliderRoutine = null;
         isSliderControl = false;
         musicSlider.SetInteractable(true);
-    }
-
-    public (bool isPlaying, bool isRecycle) GetMusicPlayerData()
-    {
-        return (isPlaying, isRecycle);
     }
 }

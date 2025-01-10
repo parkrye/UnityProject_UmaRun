@@ -7,7 +7,9 @@ public static class Utils
         int returnValue;
 
         do
+        {
             returnValue = Random.Range(0, range);
+        }
         while (currentIndex == returnValue);
 
         return returnValue;
