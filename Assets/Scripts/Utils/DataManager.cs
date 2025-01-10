@@ -73,9 +73,9 @@ public class DataManager
         updateDates[dataLength] = new Data()
         {
             StepCount = 0,
-            Distance = 0,
+            Distance = 0f,
             TimeSeconds = 0,
-            AverageSpeed = 0,
+            AverageSpeed = 0f,
         };
         updateDates[dataLength].SetDate(DateTime.Now);
         UserData.Datas = updateDates;
@@ -86,9 +86,9 @@ public class DataManager
         var data = new Data()
         {
             StepCount = 0,
-            Distance = 0,
+            Distance = 0f,
             TimeSeconds = 0,
-            AverageSpeed = 0,
+            AverageSpeed = 0f,
         };
         data.SetDate(DateTime.Now);
 
@@ -126,7 +126,7 @@ public class Data
     public string Date;
     public int StepCount;
     public float Distance;
-    public float TimeSeconds;
+    public int TimeSeconds;
     public float AverageSpeed;
 
     public void SetDate(DateTime dateTime) => Date = dateTime.ToString("O");

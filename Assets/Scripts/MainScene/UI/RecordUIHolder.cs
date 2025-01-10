@@ -37,11 +37,11 @@ public class RecordUIHolder : MonoBehaviour
         if (dataLength == 0)
             dataLength = 1;
 
-        totalStepCountText.text = string.Format("(T)StepCount: {0}", totalStepCount);
-        totalDistanceText.text = string.Format("(T)Distance: {0} m", (int)totalDistance);
+        totalStepCountText.text = string.Format("(T)Step: {0}", totalStepCount);
+        totalDistanceText.text = string.Format("(T)Dist: {0} m", (int)totalDistance);
         totalTimeText.text = string.Format("(T)Time: {0} s", (int)totalTime);
-        averageStepCountText.text = string.Format("(A)StepCount: {0}", (int)(totalStepCount / dataLength));
-        averageDistanceText.text = string.Format("(A)Distance: {0} m/d", (int)(totalDistance / dataLength));
+        averageStepCountText.text = string.Format("(A)Step: {0}", (int)(totalStepCount / dataLength));
+        averageDistanceText.text = string.Format("(A)Dist: {0} m/d", (int)(totalDistance / dataLength));
         averageTimeText.text = string.Format("(A)Time: {0} s/d", (int)(totalTime / dataLength));
         averageSpeedText.text = string.Format("(A)Speed: {0} m/s/d", (int)(totalSpeed / dataLength));
 

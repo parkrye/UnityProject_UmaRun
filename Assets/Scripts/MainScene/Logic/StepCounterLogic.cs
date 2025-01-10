@@ -1,3 +1,5 @@
+using System;
+
 using UnityEngine;
 
 using TMPro;
@@ -13,7 +15,7 @@ public class StepCounterLogic : MonoBehaviour
     private int stepCount = 0;
     private float stepLength = 0.75f; // 보폭 (미터)
     private float distance = 0f;
-    private float startTime = 0f;
+    private DateTime startTime;
 
     // 가속도 데이터 관련 변수
     private Vector3 previousAcceleration = Vector3.zero;
@@ -26,6 +28,8 @@ public class StepCounterLogic : MonoBehaviour
 
     public void Initialize()
     {
+        startTime = DateTime.Now;
+
         UpdateStepCountUI();
     }
 
@@ -64,26 +68,33 @@ public class StepCounterLogic : MonoBehaviour
 
         if (timeText != null)
         {
-            float elapsedTime = Time.time - startTime;
-            timeText.text = $"{elapsedTime.FormatTime()}";
+            var elapsedTime = (int)(DateTime.Now - startTime).TotalSeconds;
+            timeText.text = $"{elapsedTime}";
         }
 
         if (speedText != null)
         {
-            float elapsedTime = Time.time - startTime;
+            var elapsedTime = (int)(DateTime.Now - startTime).TotalSeconds;
             float averageSpeed = elapsedTime > 0 ? distance / elapsedTime : 0;
-            speedText.text = $"{averageSpeed:F2} m/s";
+            speedText.text = $"{averageSpeed} m/s";
         }
     }
 
-    public void SetUpStepCounter(int stepCount, float distance, float startTime)
+    public void SetUpStepCounter(int stepCount, float distance)
     {
         this.stepCount = stepCount;
         this.distance = distance;
-        this.startTime = startTime;
 
         UpdateStepCountUI();
     }
 
-    public (int stepCount, float distance, float startTime) GetStepCounterData() => (stepCount, distance, startTime);
+    public void UpdateDate()
+    {
+        if (DataManager.Instance.UserData.CurrentData.GetDate().Date == DateTime.Now.Date)
+            return;
+
+        startTime = DateTime.Now;
+    }
+
+    public (int stepCount, float distance, DateTime startTime) GetStepCounterData() => (stepCount, distance, startTime);
 }
